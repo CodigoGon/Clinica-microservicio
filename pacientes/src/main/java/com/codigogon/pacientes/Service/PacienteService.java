@@ -1,10 +1,14 @@
 package com.codigogon.pacientes.Service;
 
+import com.codigogon.pacientes.DTO.PacienteDTO;
+import com.codigogon.pacientes.DTO.TurnosDTO;
 import com.codigogon.pacientes.Model.Paciente;
 import com.codigogon.pacientes.Repository.IPacienteRepository;
+import com.codigogon.pacientes.Repository.TurnoAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -12,6 +16,9 @@ public class PacienteService implements IPacienteService{
 
     @Autowired
     private IPacienteRepository pacRepo;
+
+    @Autowired
+    private TurnoAPI turnoAPI;
 
     @Override
     public void PacienteCreate(Paciente pac) {
@@ -24,9 +31,26 @@ public class PacienteService implements IPacienteService{
     }
 
     @Override
-    public Paciente PacienteFind(Long id) {
+    public PacienteDTO PacienteFind(Long id) {
         //la parte complicada
+        Paciente pacActual = pacRepo.findById(id).orElse(null);
+        assert pacActual != null;
+        List<Long> arrayBusca = pacActual.getTurnList();
+        List<TurnosDTO> turnosLista = new ArrayList<>();
 
+        for (Long array : arrayBusca) {
+            turnosLista.add(turnoAPI.findTurno(array));
+        }
+
+        PacienteDTO pacFInal = new PacienteDTO();
+
+        pacFInal.setDNI(pacActual.getDNI());
+        pacFInal.setName(pacActual.getName());
+        pacFInal.setLastName(pacActual.getLastName());
+        pacFInal.setPhone(pacActual.getPhone());
+        pacFInal.setTurnList(turnosLista);
+
+        return pacFInal;
     }
 
     @Override
@@ -36,7 +60,7 @@ public class PacienteService implements IPacienteService{
 
     @Override
     public void pacienteEdit(Long id, Paciente pac) {
-        Paciente pacEditar = PacienteFind(id);
+        Paciente pacEditar = pacRepo.findById(id).orElse(null);
         if(pacEditar != null) {
             pacEditar.setDNI(pac.getDNI());
             pacEditar.setName(pac.getName());
