@@ -5,6 +5,8 @@ import com.codigogon.pacientes.DTO.TurnosDTO;
 import com.codigogon.pacientes.Model.Paciente;
 import com.codigogon.pacientes.Repository.IPacienteRepository;
 import com.codigogon.pacientes.Repository.TurnoAPI;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,9 @@ public class PacienteService implements IPacienteService{
         pacRepo.deleteById(id);
     }
 
+
+    @CircuitBreaker(name = "TurnoAPI", fallbackMethod = "inCaseError")
+    @Retry(name = "TurnoAPI")
     @Override
     public PacienteDTO PacienteFind(Long id) {
         //la parte complicada
@@ -52,6 +57,8 @@ public class PacienteService implements IPacienteService{
 
         return pacFInal;
     }
+
+    
 
     @Override
     public List<Paciente> PacienteGet() {
