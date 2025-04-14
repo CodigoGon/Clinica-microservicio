@@ -16,6 +16,7 @@ import java.util.List;
 @Service
 public class PacienteService implements IPacienteService{
 
+
     @Autowired
     private IPacienteRepository pacRepo;
 
@@ -77,5 +78,10 @@ public class PacienteService implements IPacienteService{
 
             PacienteCreate(pacEditar);
         }
+    }
+    @Override
+    public Paciente findByDNIpac(String dni) {
+
+        return pacRepo.findPacienteByDni(dni);
     }
 }

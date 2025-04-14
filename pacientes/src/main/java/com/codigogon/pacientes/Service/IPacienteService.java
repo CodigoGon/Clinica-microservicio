@@ -12,4 +12,5 @@ public interface IPacienteService {
     public PacienteDTO PacienteFind(Long id);
     public List<Paciente> PacienteGet();
     public void pacienteEdit(Long id, Paciente pac);
+    public Paciente findByDNIpac(String dni);
 }

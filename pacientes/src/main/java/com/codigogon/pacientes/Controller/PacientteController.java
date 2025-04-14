@@ -38,5 +38,16 @@ public class PacientteController {
         return pacServ.PacienteGet();
     }
 
+    @PutMapping("/editpaciente/{id}")
+    public String editPac(@PathVariable("id") Long id,
+                          @RequestBody Paciente pac) {
 
+        pacServ.pacienteEdit(id,pac);
+        return "Editado con Exito";
+    }
+
+    @GetMapping("/findbydni/{dni}")
+    public Paciente findDni(@PathVariable String dni) {
+        return pacServ.findByDNIpac(dni);
+    }
 }

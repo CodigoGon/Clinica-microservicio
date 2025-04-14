@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IPacienteRepository extends JpaRepository<Paciente, Long> {
 
-    @Query
-    public
+    @Query("SELECT p WHERE Paciente p WHERE p.DNI = DNI")
+    public Paciente findPacienteByDni(String DNI);
 }
