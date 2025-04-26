@@ -84,4 +84,9 @@ public class PacienteService implements IPacienteService{
 
         return pacRepo.findPacienteByDni(dni);
     }
+
+    @Override
+    public Paciente PacienteFindConsul(Long id) {
+        return pacRepo.findById(id).orElse(null);
+    }
 }

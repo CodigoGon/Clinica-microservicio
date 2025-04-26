@@ -33,6 +33,11 @@ public class PacientteController {
         return pacServ.PacienteFind(id);
     }
 
+    @GetMapping("/findpacienteturno/{id}")
+    public Paciente findPacConsult(@PathVariable Long id) {
+        return pacServ.PacienteFindConsul(id);
+    }
+
     @GetMapping("/getpacientes")
     public List<Paciente> getPac() {
         return pacServ.PacienteGet();
